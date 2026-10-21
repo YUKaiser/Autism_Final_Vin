@@ -10,7 +10,7 @@ pip install -r requirements.txt
 streamlit run app\main.py
 ```
 
-## MRI model input
+## About MRI model
 
 # 1. Project Overview — In Easy Language
 
