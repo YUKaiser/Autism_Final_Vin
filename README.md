@@ -566,3 +566,150 @@ Try again
 Agar tum in concepts ko samajh lete ho, toh tum apne project ke overview, algorithm, preprocessing, training aur evaluation se related basic viva questions confidently answer kar sakte ho.
 
 
+
+#Behavioural Model:
+
+Haan, bilkul! 😊 Chalo isko bahut easy Hinglish mein, example ke saath samajhte hain. Ye tumhare NeuroMind project ka Behavioral Assessment Model hai.
+
+## 1. Behavioral Model kya karta hai?
+
+Behavioral model mein hum user se 10 questions poochte hain. Har question ka answer `Yes` ya `No` hota hai.
+
+Computer directly Yes/No answers se model train nahi karta, isliye hum answers ko numbers mein convert karte hain.
+
+- Yes = 1
+- No = 0
+
+Example:
+
+| Question | Answer | Number |
+| -------- | ------ | ------ |
+| Q1       | Yes    | 1      |
+| Q2       | No     | 0      |
+| Q3       | Yes    | 1      |
+| Q4       | Yes    | 1      |
+| Q5       | No     | 0      |
+
+Isi tarah hum sabhi 10 questions ke answers ko numbers mein convert karte hain.
+
+In 10 values ko hum `A1_Score` se `A10_Score` tak naam dete hain.
+
+Simple meaning: Hum user ke answers ko numbers mein convert karte hain, taaki machine unhe process kar sake.
+
+## 2. Logistic Regression kya hai?
+
+Logistic Regression ek Machine Learning algorithm hai jo do possible classes mein se kisi ek ko predict karne ke liye use hota hai.
+
+Hamare project mein do labels hain:
+
+- YES
+- NO
+
+Socho hum model ko pehle se labelled examples dete hain. Har example mein 10 answers hote hain aur saath mein uska dataset label hota hai.
+
+Model in examples se seekhta hai ki kaun-se answer patterns YES ya NO labels ke saath associated hain.
+
+Jab koi naya user 10 answers deta hai, model un answers ko process karke predict karta hai ki YES ya NO mein se kaunsa label zyada likely hai.
+
+10 Questionnaire Answers
+
+Yes = 1, No = 0
+
+Logistic Regression Model
+
+Learned patterns from labelled data
+
+Prediction
+
+YES or NO + estimated probability
+
+Yaad rakhna: Logistic Regression naam mein Regression hai, lekin iska use binary classification ke liye bhi hota hai.
+
+## 3. Model ko train kaise kiya?
+
+Training ka matlab hai model ko purane examples se sikhana.
+
+Tumhare training script mein ye steps hain:
+
+1. Dataset load kiya: Child dataset Excel file se aur adult dataset CSV file se load kiya.
+2. Duplicate rows remove ki: Jo records repeat ho rahe the, unhe remove kiya.
+3. Input aur output decide kiya: 10 questionnaire scores inputs hain aur `Class/ASD` target label hai.
+4. Labels convert kiye: YES = 1 aur NO = 0.
+5. Data split kiya: 80% records training ke liye aur 20% testing ke liye rakhe.
+6. Model train kiya: Logistic Regression ne training examples se patterns seekhe.
+7. Performance check ki: Accuracy, precision, recall, F1-score, confusion matrix aur 5-fold cross-validation use kiye.
+8. Model save kiya: Trained model ko file mein save kiya, taaki application use baad mein load kar sake.
+
+### Child aur Adult models alag kyun hain?
+
+Tumhare training script mein child aur adult datasets ke liye separate models train kiye gaye hain.
+
+Simple words mein, dono datasets se alag-alag models patterns seekhte hain.
+
+Lekin tumhare current questionnaire page mein child model load hota hai. Isliye current page child assessment ke liye set up hai.
+
+## 4. Accuracy, Precision, Recall aur F1-score kya hain?
+
+Ye metrics batate hain ki model ki predictions kaisi hain.
+
+| Metric                  | Easy meaning                                                                          |
+| ----------------------- | ------------------------------------------------------------------------------------- |
+| Accuracy                | Total predictions mein se kitni correct thi.                                          |
+| Precision               | Model ne jitne YES predict kiye, unmein se kitne actual YES labels the.               |
+| Recall                  | Actual YES-labelled examples mein se model ne kitne YES identify kiye.                |
+| F1-score                | Precision aur recall ka combined measure.                                             |
+| Confusion matrix        | Correct aur incorrect predictions ka breakdown.                                       |
+| 5-fold cross-validation | Data ko 5 parts mein baantkar, alag-alag folds par model ko train aur evaluate karna. |
+
+Important: Tumhare diye gaye description mein in metrics ke actual numerical results nahi hain. Isliye accuracy ya precision ka koi specific number claim nahi karna chahiye jab tak training output check na ho.
+
+## 5. App use karte waqt kya hota hai?
+
+Maan lo koi user Behavioral Assessment page par aata hai.
+
+1. User 10 questions ke answers deta hai.
+2. App Yes ko 1 aur No ko 0 mein convert karta hai.
+3. Ye 10 numbers child Logistic Regression model ko diye jaate hain.
+4. Model YES/NO class predict karta hai aur YES class ki estimated probability deta hai.
+5. App result display karta hai.
+
+Possible displayed results:
+
+- Possible ASD Pattern
+- Lower ASD Pattern
+
+Ye application ke screening-style outputs hain, medical diagnosis nahi.
+
+Probability bhi automatically medically verified probability nahi hoti.
+
+## 6. Ek important confusion: 7 YES answers ka rule
+
+Tumhare training script mein ek separate rule bhi hai:
+
+Agar 10 answers mein kam se kam 7 answers YES hain, toh YES predict karo.
+
+Lekin dhyan do — ye Logistic Regression algorithm nahi hai.
+
+- 7-answer rule: Fixed condition hai.
+- Logistic Regression: Training data se patterns seekhne wala model hai.
+
+Isliye viva mein dono ko alag explain karna.
+
+## 7. Viva mein project kaise explain karna hai?
+
+Ye simple answer practice kar sakte ho:
+
+“Our behavioral assessment uses ten questionnaire questions. We convert Yes answers into 1 and No answers into 0. These ten values are given to a Logistic Regression model, which learns patterns from previously labelled datasets and predicts either YES or NO. We trained separate models for child and adult datasets and evaluated them using accuracy, precision, recall, F1-score, confusion matrix and five-fold cross-validation. In our current application, the child model is used to display a screening-style result. This is an experimental prototype, not a medical diagnosis system.”
+
+## Quick revision
+
+Khud se ye 4 questions answer karne ki try karo:
+
+1. Yes aur No ko numbers mein kyun convert karte hain?
+2. Logistic Regression kya predict karta hai?
+3. 80% training aur 20% testing ka kya meaning hai?
+4. 7 YES answers wala rule aur Logistic Regression same hain ya different?
+
+Show simple answers
+
+
