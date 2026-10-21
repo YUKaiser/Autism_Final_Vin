@@ -344,3 +344,225 @@ Uploaded MRI and facial previews are retained in the current Streamlit session
 so they remain visible after analysis and when navigating to Results.
 Use **Start New Assessment** in the sidebar to clear all current-session
 answers, predictions, and uploaded images before another person begins.
+
+
+
+
+#For me to explain them in easy way(MRI)
+Haan, bilkul! 😊 Chalo ab hum tumhare project ke important concepts ko bahut easy Hinglish mein, examples ke saath samajhte hain, taaki tumhe viva mein bhi easily explain kar pao.
+
+# 1. What is 3D CNN?
+
+Full form: 3D Convolutional Neural Network
+
+Sabse pehle CNN samjho.
+
+CNN ek deep learning algorithm hai jo images se important features seekhta hai.
+
+For example, agar hum cat ki image dete hain, toh CNN uske ears, eyes aur face ke patterns seekh sakta hai.
+
+Ab tumhare project mein cat ki image nahi, balki 3D brain MRI scan hai.
+
+[Imaging | Cerebral Circulation and Cognition Lab | Cumming School of Medicine | University of Calgary](https://images.openai.com/static-rsc-4/PXAKd984IR7GcoUgsOsQkbHCaIBKgmMnXcWDlKVlO79cYQWKLt4TYBzuIY8wy1mwQEhBLUh7qevnt7ZZv4Uhf26AD4IE4xlCFoHRwWTNFyF7JjHylMh8TvBqEfwz6a90-3Jd1pxHZ5G1x5NlwvPyHet58l8esYl9VM1DZ5LshV0?purpose=inline)
+
+2D CNN
+
+Ek flat image ya MRI slice ko process karta hai. Agar alag-alag slices independently process karein, toh unke beech ki 3D spatial information directly capture nahi hoti.
+
+[Why Humans Are So Smart—And So Stressed Out – SAPIENS](https://images.openai.com/static-rsc-4/0jbTCz-0By5Xta2FBjTAoXBd02BdyDAqcVPatxVDdExMChYfQ2dljlhvcqwQAxmP278Aq213rxiLa7PL6kKnGmk3genV5MdnfNqJ581YyIrafcGFg_uhguez9owOTn-mRDqsf2FPwRMPaGW8qPuUyNpE5GnKnBF5aO66BTQAhfU?purpose=inline)
+
+3D CNN
+
+Brain ke volume ki width, height aur depth par kaam karta hai. Isliye neighboring slices aur unke beech ke spatial patterns ko seekh sakta hai.
+
+### Tumhare project mein kaise kaam karta hai?
+
+1. Hum preprocessed MRI volume input dete hain.
+2. CNN us volume mein patterns identify karta hai.
+3. Multiple layers milkar useful features seekhti hain.
+4. Last layer do classes ke scores generate karti hai.
+5. Softmax un scores ko probabilities mein convert karta hai.
+
+Viva answer: “We used a 3D CNN because our input is a three-dimensional brain MRI volume. It can learn spatial features across the width, height and depth of the brain.”
+
+# 2. What is MRI preprocessing?
+
+Preprocessing ka simple meaning hai raw data ko model ke liye ready karna.
+
+Tumhare project mein MRI preprocessing ke 3 important steps hain.
+
+[Magnetic resonance image (MRI) of the brain. MRI scan of human brain axial view with black background.](https://images.openai.com/static-rsc-4/OQElaVHcfNwHroMyJDzHUJEzRuNHa2S4YthtDW9lhHCaaWVvFKQJXChK2lN_CB_XA8yBpq0kbDXrJv4k43du2WaDOM2ESM8Dt2o0hRxe6CXWo1fyF6cv8wybU4x5yFJn1UqhUb60cyipMhA4pngAGH1QRRWawiMykfpB4xpGXzC2gxOIlqZJnMvTaMZPO6p6?purpose=inline)
+
+A. Intensity Normalization
+
+MRI ke pixel/voxel intensity values ko ek common range mein laate hain.
+
+Tumhare project mein values ko 0 se 1 ke beech normalize kiya gaya.
+
+Example: Agar values alag-alag scales par hain, toh unhe common scale par laane se model ke liye data process karna easier hota hai.
+
+[脳 MRI 3D : 正常解剖学 | e-Anatomy](https://images.openai.com/static-rsc-4/kyTsjUBMGev4JoXQStm6LH-dDYNAHhl3JuwX6C8frizs7gmdm0zDV2FwGlqvSeByH7_kML1yfMrnmEi5-UutzDBKpyv4EmD-4prgDb8BIaklOlbWFoMqCyFwMxm4IDqi42jw92vhKsuiqecXLjWxTOuphSOEaOcqZfHdFH9DbQ4?purpose=inline)
+
+B. Resizing
+
+Original MRI volume ka shape approximately \\(176 \times 256 \times 256\\) tha.
+
+Humne ise \\(128 \times 160 \times 160\\) mein convert kiya.
+
+Isse sabhi volumes ka input shape same ho gaya aur computation ka load kam hua.
+
+.npy
+
+C. Data Storage
+
+Preprocessed MRI volumes ko `.npy` format mein save kiya.
+
+Ye NumPy ka file format hai, jisme numerical arrays store kiye ja sakte hain. Baad mein model in arrays ko input ke roop mein use karta hai.
+
+Viva answer: “MRI preprocessing means preparing the raw MRI data before giving it to the model. We normalized the intensity values, resized all volumes to a common shape and saved them as NumPy files.”
+
+# 3. What is ROC-AUC?
+
+Ye tumhare project ka important evaluation concept hai.
+
+Pehle Accuracy samjho.
+
+Maan lo test set mein 16 participants hain aur model ne 8 ko correctly classify kiya.
+
+\\[ \text{Accuracy}=\frac{\text{Correct predictions}}{\text{Total predictions}}\times100 \\]
+
+\\[ =\frac{8}{16}\times100=50\\% \\]
+
+Matlab test set par 16 mein se 8 predictions correct the.
+
+Ab ROC-AUC kya hai?
+
+- ROC ek curve hai jo different classification thresholds par model ki performance compare karta hai.
+- AUC ka meaning hai Area Under the Curve.
+
+Easy language mein, ROC-AUC batata hai ki model dono classes ke examples ko alag rank karne mein kitna achha hai.
+
+| ROC-AUC value | Simple meaning                               |
+| ------------- | -------------------------------------------- |
+| 0.5           | Random ranking jaisa                         |
+| 0.75          | Classes ko distinguish karne ki kuch ability |
+| 1.0           | Perfect ranking                              |
+
+Tumhare project ka test ROC-AUC 0.75 hai.
+
+Dhyan do: 0.75 ROC-AUC ka matlab 75% accuracy nahi hota. Tumhari actual test accuracy 50% thi.
+
+Viva answer: “Accuracy measures how many predictions are correct, while ROC-AUC measures how well the model distinguishes between two classes across different thresholds.”
+
+# 4. What is Softmax?
+
+Tumhare model ki final layer do classes ke liye scores produce karti hai.
+
+Softmax in scores ko probabilities mein convert karta hai.
+
+Example ke liye, maan lo model ye probabilities deta hai:
+
+ASD-associated
+
+### 70%
+
+Control
+
+### 30%
+
+Illustrative example only — these are not your model's actual prediction results.
+
+Dono probabilities ka total 100% hai.
+
+Aise example mein model ASD-associated class ko higher probability deta hai.
+
+Lekin yaad rakho: ye model ka prediction score hai, diagnosis ya confirmed 70% chance of autism nahi.
+
+Viva answer: “Softmax converts the model's output scores into probabilities for the two classes. We display the ASD-associated class probability in our Gradio prototype.”
+
+# 5. What are Training, Validation and Testing?
+
+Isko exam ki example se samjho.
+
+Training — 74 participants
+
+Jaise student textbook se prepare karta hai, waise model in examples se patterns seekhta hai.
+
+Validation — 16 participants
+
+Jaise practice test se check karte hain ki preparation kaisi hai, waise validation data se model ki performance monitor karte hain.
+
+Testing — 16 participants
+
+Jaise final exam mein unseen questions solve karte hain, waise test data final model ki performance check karta hai.
+
+Humne stratified splitting use ki, jisse classes ka proportion har split mein approximately maintain rahe. Ek participant ke scans different splits mein overlap nahi karte the.
+
+Viva answer: “We divided the dataset into training, validation and testing sets. Training teaches the model, validation helps monitor and select the model, and testing evaluates its final performance on unseen data.”
+
+# 6. What are AdamW, CrossEntropyLoss and Early Stopping?
+
+Ye training ke time use hone wale important concepts hain.
+
+| Concept               | Easy meaning                                                                                               |
+| --------------------- | ---------------------------------------------------------------------------------------------------------- |
+| AdamW optimizer       | Model ke weights ko update karta hai taaki errors kam ho sakein.                                           |
+| CrossEntropyLoss      | Model ki predictions aur correct class labels ke beech error measure karta hai.                            |
+| Learning rate: 0.0001 | Har update mein weights kitne bade steps se change honge, usko control karta hai.                          |
+| Batch size: 2         | Model ek training batch mein 2 MRI volumes process karta hai.                                              |
+| Epoch                 | Training dataset ka ek complete pass.                                                                      |
+| Early stopping        | Validation performance improve na hone par training ko jaldi rok deta hai, according to the stopping rule. |
+
+Tumhare project mein maximum 30 epochs set kiye gaye the, lekin early stopping ke kaaran training epoch 15 par ruk gayi.
+
+Easy example: Agar student baar-baar practice kar raha hai, lekin practice-test results improve nahi ho rahe, toh hum practice ka tareeka review karte hain. Early stopping model training mein unnecessary continuation ko rokne mein help karta hai.
+
+# 7. Quick viva practice
+
+Ab tum check kar sakte ho ki concepts samajh aaye ya nahi.
+
+1\. Why did we use a 3D CNN?
+
+Because MRI is a 3D volume
+
+Because it only works with text
+
+Because it always gives 100% accuracy
+
+Correct! Correct! A 3D CNN learns spatial features across the three dimensions of an MRI volume.
+
+2\. What is the purpose of normalization?
+
+To delete MRI scans
+
+To bring intensity values to a common range
+
+To create the Gradio interface
+
+Correct! Correct! In our project, intensity values were normalized between 0 and 1.
+
+3\. What was our test accuracy?
+
+75%
+
+100%
+
+50%
+
+Correct! Correct! Test accuracy was 50%, while test ROC-AUC was 0.75.
+
+4\. What does Softmax do?
+
+Resizes the MRI volume
+
+Converts class scores into probabilities
+
+Splits the dataset
+
+Correct! Correct! Softmax converts the model's class scores into probabilities.
+
+Try again
+
+Agar tum in concepts ko samajh lete ho, toh tum apne project ke overview, algorithm, preprocessing, training aur evaluation se related basic viva questions confidently answer kar sakte ho.
+
+
